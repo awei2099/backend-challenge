@@ -1,14 +1,35 @@
 import os
-
+import json
 from app import app, db, DB_FILE
-
-from models import *
+from models import User, Club
 
 def create_user():
-    print("TODO: Create a user called josh")
+    # Check if the user already exists
+    if User.query.filter_by(username='josh').first():
+        print("User 'josh' already exists.")
+        return
+
+    # Create a new user
+    user = User(username='josh', email='josh@example.com', password_hash='hashed_password')
+    db.session.add(user)
+    db.session.commit()
+    print("User 'josh' created successfully.")
 
 def load_data():
-    print("TODO: Load in clubs.json to the database.")
+    with open('clubs.json', 'r') as file:
+        clubs_data = json.load(file)
+    
+    for club_data in clubs_data:
+        club = Club(
+            code=club_data['code'],
+            name=club_data['name'],
+            description=club_data['description'],
+            tags=club_data['tags']
+        )
+        db.session.add(club)
+    
+    db.session.commit()
+    print("Club data loaded successfully.")
 
 
 # No need to modify the below code.
