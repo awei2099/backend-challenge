@@ -18,9 +18,9 @@ def main():
 
 @app.route("/api")
 def api():
-    return jsonify({"message": "Welcome to the Penn Club Review API!."})
+    return "Welcome to Penn Club Review API!."
 
-@app.route("/api/clubs", methods=["GET"])
+@app.get("/api/clubs")
 def get_clubs():
     clubs = Club.query.all()
     clubs_list = [{
@@ -32,31 +32,7 @@ def get_clubs():
     } for club in clubs]
     return jsonify(clubs_list)
 
-@app.route("/api/user/<username>", methods=["GET"])
-def get_user_profile(username):
-    user = User.query.filter_by(username=username).first()
-    if user:
-        return jsonify({
-            "username": user.username,
-            "email": user.email
-        })
-    else:
-        return jsonify({"error": "User not found"}), 404
-    
-@app.route("/api/clubs/search", methods=["GET"])
-def search_clubs():
-    search_term = request.args.get("q", "").lower()
-    clubs = Club.query.filter(Club.name.ilike(f"%{search_term}%")).all()
-    clubs_list = [{
-        "id": club.id,
-        "code": club.code,
-        "name": club.name,
-        "description": club.description,
-        "tags": club.tags
-    } for club in clubs]
-    return jsonify(clubs_list)
-
-@app.route("/api/clubs", methods=["POST"])
+@app.post("/api/clubs")
 def create_club():
     data = request.get_json()
     if not data:
@@ -78,9 +54,33 @@ def create_club():
         "tags": new_club.tags
     }), 201
 
-@app.route("/api/clubs/<int:club_id>/favorite", methods=["POST"])
-def favorite_club(club_id):
-    club = Club.query.get(club_id)
+@app.get("/api/user/<username>")
+def get_user_profile(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({
+            "username": user.username,
+            "email": user.email
+        })
+    else:
+        return jsonify({"error": "User not found"}), 404
+    
+@app.get("/api/clubs/search")
+def search_clubs():
+    search_term = request.args.get("q", "").lower()
+    clubs = Club.query.filter(Club.name.ilike(f"%{search_term}%")).all()
+    clubs_list = [{
+        "id": club.id,
+        "code": club.code,
+        "name": club.name,
+        "description": club.description,
+        "tags": club.tags
+    } for club in clubs]
+    return jsonify(clubs_list)
+
+@app.post("/api/clubs/<string:club_code>/favorite")
+def favorite_club(club_code):
+    club = Club.query.filter_by(code=club_code).first()
     if not club:
         return jsonify({"error": "Club not found"}), 404
 
@@ -88,11 +88,12 @@ def favorite_club(club_id):
     db.session.commit()
     return jsonify({
         "id": club.id,
+        "code": club.code,
         "name": club.name,
         "favorite_count": club.favorite_count
     })
 
-@app.route("/api/clubs/<int:club_id>", methods=["PUT"])
+@app.put("/api/clubs/<int:club_id>")
 def modify_club(club_id):
     club = Club.query.get(club_id)
     if not club:
@@ -114,7 +115,7 @@ def modify_club(club_id):
         "tags": club.tags
     })
 
-@app.route("/api/tags", methods=["GET"])
+@app.get("/api/tags")
 def get_tags():
     clubs = Club.query.all()
     tag_counts = defaultdict(int)

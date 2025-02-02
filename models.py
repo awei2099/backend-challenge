@@ -1,9 +1,6 @@
 from app import db
 
-# Your database models should go here.
-# Check out the Flask-SQLAlchemy quickstart for some good docs!
-# https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/
-
+# user model class
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -13,7 +10,7 @@ class User(db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
                               
-
+# club model class
 class Club(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(50), unique=True, nullable=False)
