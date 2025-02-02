@@ -7,7 +7,7 @@ Penn Club Review is a backend system designed for students to explore clubs and 
 
 ### Prerequisites
 Ensure you have the following installed:
-- Python 3.8+
+- Python
 - `pipx` 
 - `poetry` 
 - `flask`
