@@ -20,7 +20,6 @@ Ensure you have the following installed:
    git clone <repo-url>
    cd backend-challenge
    ```
-   Make sure the repository is private.
 
 2. **Install Dependencies**
    ```sh
