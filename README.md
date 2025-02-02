@@ -12,7 +12,7 @@ Ensure you have the following installed:
 - `poetry` 
 - `flask`
 - `SQLAlchemy`
-- `Postman` 
+- `Postman` (optional, used for testing c:)
 
 ### Installation Steps
 1. **Clone the Repository**
