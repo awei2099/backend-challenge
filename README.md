@@ -8,9 +8,11 @@ Penn Club Review is a backend system designed for students to explore clubs and 
 ### Prerequisites
 Ensure you have the following installed:
 - Python 3.8+
-- `pipx` (for package management)
-- `poetry` (for dependency management)
-- `Postman` (for API testing, recommended)
+- `pipx` 
+- `poetry` 
+- `flask`
+- `SQLAlchemy`
+- `Postman` 
 
 ### Installation Steps
 1. **Clone the Repository**
